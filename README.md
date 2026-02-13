@@ -1,2 +1,558 @@
-# Iloveyouamisha
-A heartfelt, interactive love website dedicated to Amisha — cute, creative, and full of personal touches. 💖
+
+[index.html](https://github.com/user-attachments/files/25290558/index.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Amisha ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Dancing+Script:wght@700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- GLOBAL & RESET --- */
+        * { box-sizing: border-box; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
+       
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        body {
+            background-color: #ffeef2;
+            background-image: radial-gradient(#fff0f3 2px, transparent 2px);
+            background-size: 30px 30px;
+            font-family: 'Montserrat', sans-serif;
+           
+            /* FLEXBOX CENTERING - The most robust method for mobile */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers items horizontally */
+            justify-content: center; /* Centers items vertically */
+           
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+       
+        body.allow-scroll {
+            justify-content: flex-start;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            overflow-y: auto;
+        }
+        #particleCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        /* --- TYPEWRITER --- */
+        #intro-wrapper {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 200px; width: 100%; z-index: 20;
+        }
+        .vanish { opacity: 0; transform: translateY(-20px) scale(0.9); pointer-events: none; display: none !important; }
+       
+        .typewriter-container {
+            display: inline-block; text-align: center; max-width: 100%; margin-bottom: 15px; min-height: 60px;
+        }
+       
+        /* DIMMED STORY TEXT */
+        #typewriter-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9rem;
+            color: #bbb; /* Faded Grey */
+            line-height: 1.5;
+            letter-spacing: -0.5px;
+            white-space: pre-wrap;
+            font-weight: 700;
+        }
+       
+        /* NAME: NO GLOW, JUST BOLD PINK */
+        #flicker-name {
+            color: #ff4d6d;
+            font-weight: 700;
+            opacity: 1;
+            text-shadow: none; /* NO GLOW */
+        }
+        .cursor { display: inline-block; width: 3px; height: 1.1em; background: #ff4d6d; margin-left: 2px; animation: blink 0.8s infinite; vertical-align: bottom; }
+        @keyframes blink { 50% { opacity: 0; } }
+       
+        .typewriter-machine { --pink-main: #ff758f; --pink-dark: #ff4d6d; --key: #fff; --paper: #EEF0FD; --text-line: #D3D4EC; --gold: #FBC56C; --duration: 3s; position: relative; width: 120px; height: 70px; margin: 10px auto; transform: scale(0.8); transform-origin: center; }
+        .typewriter-machine .slide { width: 92px; height: 20px; border-radius: 3px; transform: translateX(14px); background: linear-gradient(var(--pink-main), var(--pink-dark)); animation: slide var(--duration) ease infinite; position: relative; }
+        .typewriter-machine .slide:before { content: ''; position: absolute; width: 2px; height: 8px; top: 6px; left: 100%; background: var(--gold); }
+        .typewriter-machine .slide:after { content: ''; position: absolute; left: 94px; top: 3px; height: 14px; width: 6px; border-radius: 3px; background: var(--gold); }
+        .typewriter-machine .slide i { display: block; position: absolute; right: 100%; width: 6px; height: 4px; top: 4px; background: var(--gold); }
+        .typewriter-machine .slide i:before { content: ''; position: absolute; right: 100%; top: -2px; width: 4px; border-radius: 2px; height: 14px; background: var(--gold); }
+        .typewriter-machine .paper { position: absolute; left: 24px; top: -26px; width: 40px; height: 46px; border-radius: 5px; background: var(--paper); transform: translateY(46px); animation: paper var(--duration) linear infinite; }
+        .typewriter-machine .paper:before { content: ''; position: absolute; left: 6px; right: 6px; top: 7px; border-radius: 2px; height: 4px; transform: scaleY(.8); background: var(--text-line); box-shadow: 0 12px 0 var(--text-line), 0 24px 0 var(--text-line), 0 36px 0 var(--text-line); }
+        .typewriter-machine .keyboard { width: 120px; height: 56px; margin-top: -10px; z-index: 1; position: relative; }
+        .typewriter-machine .keyboard:before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 7px; background: linear-gradient(135deg, var(--pink-main), var(--pink-dark)); transform: perspective(10px) rotateX(2deg); transform-origin: 50% 100%; }
+        .typewriter-machine .keyboard:after { content: ''; position: absolute; left: 2px; top: 25px; width: 11px; height: 4px; border-radius: 2px; box-shadow: 15px 0 0 var(--key), 30px 0 0 var(--key), 45px 0 0 var(--key), 60px 0 0 var(--key), 75px 0 0 var(--key), 90px 0 0 var(--key), 22px 10px 0 var(--key), 37px 10px 0 var(--key), 52px 10px 0 var(--key), 60px 10px 0 var(--key), 68px 10px 0 var(--key), 83px 10px 0 var(--key); animation: keyboard-press var(--duration) linear infinite; }
+        @keyframes slide { 0%, 5% { transform: translateX(14px); } 15%, 30% { transform: translateX(6px); } 40%, 55% { transform: translateX(0); } 65%, 70% { transform: translateX(-4px); } 80%, 89% { transform: translateX(-12px); } 100% { transform: translateX(14px); } }
+        @keyframes paper { 0%, 5% { transform: translateY(46px); } 20%, 30% { transform: translateY(34px); } 40%, 55% { transform: translateY(22px); } 65%, 70% { transform: translateY(10px); } 80%, 85% { transform: translateY(0); } 92%, 100% { transform: translateY(46px); } }
+        @keyframes keyboard-press { 0%, 5%, 12%, 21%, 30%, 39%, 48%, 57%, 66%, 75%, 84%, 100% { transform: translateY(0); } 9%, 18%, 27%, 36%, 45%, 54%, 63%, 72%, 81% { transform: translateY(1.5px); } }
+        /* --- CARDS (Universal Mobile Friendly) --- */
+        .card {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            /* EXACT DIMENSIONS FOR CENTERED CONTENT */
+            width: 90%;
+            max-width: 360px;
+           
+            padding: 20px 15px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            text-align: center; border: 1px solid rgba(255, 221, 229, 0.6);
+            position: relative; z-index: 100;
+           
+            /* Ensure margins don't push it off */
+            margin: 10px auto;
+        }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.8s forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-out { animation: fadeOut 0.8s forwards; }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+       
+        h1 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ff4d6d; margin: 5px 0 10px 0; }
+        /* --- DATE PICKER --- */
+        .date-container-custom {
+            position: relative;
+            width: 100%; height: 50px;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #fff0f3;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .fake-input-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+       
+        .calendar-icon-svg {
+            position: absolute;
+            right: 15px;
+            width: 20px; height: 20px;
+            fill: #ff4d6d;
+        }
+       
+        .placeholder-text-styled {
+            font-family: 'Courier Prime', monospace;
+            color: #ff4d6d;
+            opacity: 0.6;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            text-transform: lowercase;
+            font-variant: small-caps;
+        }
+        .real-date-input {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            z-index: 10;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .real-date-input::-webkit-calendar-picker-indicator {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; padding: 0; margin: 0; opacity: 0; cursor: pointer;
+        }
+        /* --- TIMELINE SECTION (FIXED TO MATCH CARD) --- */
+        #timeline-section {
+            /* FORCE SAME WIDTH AS CARD */
+            width: 90%;
+            max-width: 360px;
+            margin: 0 auto;
+           
+            position: relative;
+            padding: 20px 0 50px 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+       
+        .love-slider-track {
+            position: relative;
+            width: 80%;
+            height: 3px;
+            background: #ffe0e6;
+            margin: 0 auto 30px auto;
+            border-radius: 10px;
+        }
+        .love-slider-heart {
+            position: absolute;
+            top: 50%; left: 0%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: drop-shadow(0 2px 4px rgba(255,77,109,0.3));
+        }
+        .h-memory-stage {
+            width: 100%;
+            height: 200px;
+            position: relative;
+        }
+       
+        /* THE FIX: Absolute Position 0, Width 100%. No Transforms on X. */
+        .h-memory-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Fill the parent (which is already centered 360px) */
+           
+            background: #fff;
+            padding: 25px 20px;
+            border-radius: 20px;
+            border: 1px solid #ffeef2;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.1);
+            text-align: center;
+            opacity: 0;
+           
+            /* Only animate Y */
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .h-memory-item.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+       
+        .h-memory-item.exit {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+        }
+        .tl-date { font-family: 'Courier Prime', monospace; font-size: 1.2rem; font-weight: 700; color: #ff4d6d; margin-bottom: 5px; position: relative; z-index: 2; }
+        .tl-title { font-family: 'Courier Prime', monospace; font-size: 0.75rem; font-weight: 700; color: #ff8fa3; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; position: relative; z-index: 2; border-bottom: 2px dotted #ffe0e6; padding-bottom: 5px; display: inline-block;}
+        .tl-msg { font-family: 'Courier Prime', monospace; font-size: 0.95rem; color: #555; line-height: 1.6; position: relative; z-index: 2; }
+        /* --- BUTTONS --- */
+        .btn { background: #ff4d6d; color: white; padding: 14px; width: 100%; border: none; border-radius: 50px; font-weight: 700; font-size: 0.9rem; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.2); }
+        .btn:active { transform: scale(0.98); }
+        #no-btn { background: #bbb; color: white; width: 120px; padding: 10px; font-size: 0.8rem; border-radius: 50px; position: relative; display: block; margin: 10px auto 0 auto; border: none; cursor: pointer; transition: all 0.2s; }
+        .shake-anim { animation: shake 0.4s ease-in-out; background: #ff758f !important; }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 50% { transform: translateX(5px) rotate(5deg); } 75% { transform: translateX(-5px) rotate(-5deg); } 100% { transform: translateX(0); } }
+       
+        .cosmic-btn { background: linear-gradient(45deg, #4a90e2, #ff758f, #4a90e2); background-size: 200% 200%; animation: gradientMove 3s ease infinite; color: white; border: none; padding: 14px; width: 100%; border-radius: 50px; font-weight: 700; font-size: 0.9rem; cursor: pointer; margin-top: 15px; box-shadow: 0 5px 20px rgba(74, 144, 226, 0.25); }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .spell-btn { background: transparent; border: 1.5px solid #ff4d6d; color: #ff4d6d; padding: 10px 20px; border-radius: 30px; font-weight: 700; font-size: 0.75rem; letter-spacing: 1px; cursor: pointer; margin: 20px auto; display: block; }
+        .forget-btn { background: transparent; border: none; color: #ff8fa3; font-size: 0.7rem; text-decoration: underline; cursor: pointer; margin-top: 12px; opacity: 0.9; font-weight: 600; }
+       
+        /* --- SLIDERS --- */
+        .slider-box { background: rgba(255,255,255,0.6); padding: 8px 12px; border-radius: 15px; margin-bottom: 8px; border: 1px solid #ffedf1; }
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+        .slider-label { font-size: 0.6rem; font-weight: 700; color: #ff4d6d; text-transform: uppercase; }
+        .slider-pct { font-size: 0.65rem; font-weight: 600; color: #ff758f; background: #ffeef2; padding: 2px 6px; border-radius: 8px; }
+        .slider-status { font-size: 0.65rem; display: block; margin-top: 3px; color: #ff4d6d; }
+        .status-bold { font-weight: 800; }
+        input[type=range] { width: 100%; height: 6px; border-radius: 5px; background: #e0e0e0; outline: none; -webkit-appearance: none; margin: 6px 0; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: #ff4d6d; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 6px rgba(255, 77, 109, 0.3); }
+       
+        /* --- BIO OVERLAYS --- */
+        .bio-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff5f7; z-index: 300; padding: 30px 15px 60px 15px; overflow-y: auto; display: block; text-align: left; }
+        .bio-container { max-width: 360px; margin: 0 auto; }
+        .bio-header h2 { font-family: 'Dancing Script', cursive; font-size: 2rem; color: #ff4d6d; margin: 0; text-align: center; }
+        .bio-header p { text-align: center; color: #ff8fa3; font-size: 0.75rem; font-weight: 700; margin-top: 5px; margin-bottom: 20px; }
+        .bio-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .data-item { background: #fff; padding: 10px; border-radius: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); border: 1px solid #ffe1e8; }
+        .data-item label { font-size: 0.6rem; font-weight: 700; color: #ff8fa3; display: block; text-transform: uppercase; }
+        .data-item span { font-size: 0.8rem; font-weight: 600; color: #444; }
+        .bio-section { background: white; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #ffe1e8; box-shadow: 0 3px 10px rgba(0,0,0,0.02); }
+        .bio-section h3 { font-size: 0.8rem; color: #ff4d6d; text-transform: uppercase; margin-top: 0; border-bottom: 1px dashed #ffd1dc; padding-bottom: 6px; letter-spacing: 0.5px; }
+        .bio-section p { font-size: 0.75rem; line-height: 1.6; color: #555; margin: 0; margin-top: 8px; }
+        .back-minimal-btn { background: #ff4d6d; color: white; width: 100%; padding: 12px; border-radius: 30px; font-size: 0.8rem; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 109, 0.2); }
+       
+        /* --- FACTS OVERLAY --- */
+        #facts-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fffafa; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px 15px 60px 15px; text-align: center; overflow-y: auto; }
+        .profile-row { display: flex; gap: 10px; margin-bottom: 20px; width: 100%; max-width: 340px; position: relative; z-index: 10; }
+        .profile-card { flex: 1; color: white; padding: 12px 10px; border-radius: 15px; text-align: left; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .profile-card h4 { margin: 0; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 4px; margin-bottom: 4px; }
+        .profile-card p { font-size: 0.6rem; margin: 0; line-height: 1.2; }
+        #soul-line-svg { width: 40px; height: 40px; margin: 5px 0; opacity: 0; transition: opacity 0.8s; }
+        .soul-path { fill: none; stroke: #ff4d6d; stroke-width: 2; stroke-dasharray: 4, 4; animation: dash-flow 1.5s linear infinite; }
+        @keyframes dash-flow { to { stroke-dashoffset: -8; } }
+        .connection-header { font-size: 0.6rem; font-weight: 900; color: #ff4d6d; letter-spacing: 1.5px; margin: 5px 0; opacity: 0; transition: opacity 0.5s; }
+        .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; width: 100%; max-width: 350px; padding-bottom: 20px; }
+        .astro-card { background: white; border: 1px solid #ffedf1; padding: 12px 8px; border-radius: 15px; text-align: center; opacity: 0; transform: scale(0.9) translateY(20px); transition: all 0.4s; position: relative; }
+        .astro-card.reveal { opacity: 1; transform: scale(1) translateY(0); }
+        .astro-card .icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+        .astro-card h3 { font-size: 0.6rem; color: #ff4d6d; margin: 3px 0; text-transform: uppercase; }
+        .astro-card p { font-size: 0.5rem; color: #777; line-height: 1.1; margin: 0; }
+        .astro-card .score { font-size: 0.75rem; font-weight: 900; color: #ff4d6d; margin-top: 6px; display: block; }
+        /* --- MODAL --- */
+        #astro-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        .modal-content { background: white; width: 100%; max-width: 320px; border-radius: 25px; text-align: center; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.2); transform: scale(0.9); animation: popUp 0.3s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes popUp { to { transform: scale(1); } }
+        .modal-header-bg { background: #ffeef2; padding: 20px 20px 10px 20px; border-bottom: 1px solid #ffe1e8; }
+        .modal-emoji { font-size: 2.5rem; display: block; margin-bottom: 5px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .modal-title { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #ff4d6d; margin: 0; line-height: 1.2; }
+        .modal-body { padding: 20px; font-size: 0.85rem; line-height: 1.6; color: #555; text-align: left; font-family: 'Montserrat', sans-serif; font-weight: 500; }
+        .modal-btn { background: #4a90e2; color: white; border: none; padding: 12px; width: 80%; border-radius: 30px; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3); }
+        .global-footer { position: fixed; bottom: 0; left: 0; width: 100%; padding: 8px 0; background: rgba(255, 238, 242, 0.9); backdrop-filter: blur(8px); text-align: center; font-size: 0.55rem; color: #ff4d6d; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; z-index: 9999; box-shadow: 0 -2px 10px rgba(0,0,0,0.02); border-top: 1px solid rgba(255,255,255,0.5); }
+        .pumping-heart { display: inline-block; animation: pump 0.8s infinite; font-size: 0.65rem; margin-left: 3px; }
+        @keyframes pump { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .float-anim { animation: float 3s ease-in-out infinite; display: inline-block; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+       
+        .confetti-piece { position: absolute; width: 10px; height: 10px; background: #ffd700; top: 0; opacity: 0; }
+        @keyframes confettiDrop { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        .petal, .rain-emoji { position: fixed; top: -10vh; z-index: 200; pointer-events: none; animation: fall linear forwards; }
+        .rain-emoji { font-size: 1.8rem; }
+        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+       
+        /* --- ROMANTIC DIVIDER --- */
+        .heart-divider { display: flex; align-items: center; justify-content: center; margin: 25px 0; color: #ff4d6d; font-size: 1.2rem; }
+        .heart-divider::before, .heart-divider::after { content: ''; flex: 1; height: 1px; background: #ffc2d1; margin: 0 10px; opacity: 0.6; }
+    </style>
+</head>
+<body onmousemove="updateMouse(event)" ontouchmove="updateTouch(event)">
+<canvas id="particleCanvas"></canvas>
+<div class="global-footer">MADE WITH LOVE BY SUJAN <span class="pumping-heart">❤️</span></div>
+<div class="card">
+    <div id="sec1">
+        <div id="intro-wrapper">
+            <div class="typewriter-container">
+                <span id="typewriter-text"></span><span class="cursor" id="cursor"></span>
+            </div>
+            <div class="typewriter-machine">
+                <div class="slide"><i></i></div>
+                <div class="paper"></div>
+                <div class="keyboard"></div>
+            </div>
+        </div>
+       
+        <div id="first-content" class="hidden">
+            <h1>Hi Amisha! ❤️</h1>
+            <p style="font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #ff4d6d; font-weight: 600; margin-bottom: 10px;">When is our Love Anniversary? ✨</p>
+           
+            <div class="date-container-custom">
+                <div class="fake-input-layer">
+                    <span class="placeholder-text-styled" id="date-text-display">mm / dd / yyyy</span>
+                    <svg class="calendar-icon-svg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                </div>
+                <input type="date" id="datePicker" class="real-date-input" onchange="updateFakeDate(this)">
+            </div>
+           
+            <button class="btn" onclick="checkDate()">OPEN MY HEART</button>
+            <button class="forget-btn" onclick="handleForget()">I forgot... 🙈</button>
+        </div>
+    </div>
+    <div id="sec2" class="hidden">
+        <h1>Vibe Check</h1>
+        <p style="font-size: 0.65rem; color: #ff758f; margin-bottom: 8px;">Rate your Puku honestly! 😂</p>
+        <div class="slider-box"><div class="slider-header"><span class="slider-label">SUJAN'S CUTENESS</span><span id="pct-cute" class="slider-pct">30%</span></div><input type="range" id="cuteS" value="30" oninput="handleCute()" onchange="stopRain()" ontouchend="stopRain()"><span id="l2" class="slider-status"></span></div>
+        <div class="slider-box"><div class="slider-header"><span class="slider-label">SUJAN'S FUNNYNESS</span><span id="pct-funny" class="slider-pct">20%</span></div><input type="range" id="funnyS" value="20" oninput="handleFunny()" onchange="stopRain()" ontouchend="stopRain()"><span id="l4" class="slider-status"></span></div>
+        <div class="slider-box"><div class="slider-header"><span class="slider-label">SUJAN'S CARENESS</span><span id="pct-care" class="slider-pct">25%</span></div><input type="range" id="careS" value="25" oninput="handleCare()" onchange="stopRain()" ontouchend="stopRain()"><span id="l3" class="slider-status"></span></div>
+        <div class="slider-box"><div class="slider-header"><span class="slider-label">SUJAN'S LOVE LEVEL</span><span id="pct-love" class="slider-pct">20%</span></div><input type="range" id="loveS" value="20" oninput="handleLove()" onchange="stopRain()" ontouchend="stopRain()"><span id="l1" class="slider-status"></span></div>
+        <button class="btn" onclick="checkMeters()">I'M READY</button>
+    </div>
+    <div id="sec3" class="hidden">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW12amNqZ3R4bmV3amRreW12amNqZ3R4bmV3amRreW12JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/c76IJLufpNwSULPk77/giphy.gif" style="width:120px; border-radius:15px; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); display:block; margin: 10px auto 5px auto;">
+        <h1 class="float-anim" style="margin-top:0px; margin-bottom:5px;">Amisha...</h1>
+        <h2 style="color: #ff4d6d; font-size: 1.2rem; margin-bottom:15px;">Will you be my Valentine? ❤️</h2>
+        <div style="position: relative; height: 140px;">
+            <button class="btn" onclick="handleYes()">YES! 😍</button>
+            <button id="no-btn" onclick="handleNo()">NO</button>
+        </div>
+    </div>
+   
+    <div id="timeline-section" class="hidden">
+        <h1 class="fade-in" style="font-size:1.6rem; margin-bottom:20px;">Our Journey...</h1>
+       
+        <div class="love-slider-track">
+            <div class="love-slider-heart" id="love-heart">❤️</div>
+        </div>
+        <div class="h-memory-stage" id="h-stage">
+            </div>
+    </div>
+    <div id="final" class="hidden" style="width: 90%; max-width: 360px; padding-bottom: 60px;">
+        <h1>I Love You! ❤️</h1>
+        <div class="heart-divider">❤</div>
+        <div style="background: #fffafa; padding: 20px; border-radius: 20px; border-top: 4px solid #ff4d6d; text-align: left; font-size: 0.85rem; line-height: 1.6; color: #444;">
+            My dearest Amisha,
+        
+            <br><br>On this Valentine’s Day, I promise you a love that does not fade with time, a loyalty that remains unshaken, and a devotion that grows stronger with every passing year.
+          <br><br>
+       My heart is yours — today, tomorrow, and forever… ever and ever.
+            <div style="font-family: 'Dancing Script'; font-size: 1.5rem; color: #ff4d6d; margin-top:10px; text-align: center;">Always Yours, Sujan (Puku) ❤️</div>
+        </div>
+        <button class="cosmic-btn" onclick="toggleFacts()">✨ SEE OUR COSMIC SECRETS ✨</button>
+    </div>
+</div>
+<div id="facts-overlay" class="hidden">
+    <h1 style="font-family: 'Dancing Script'; color: #ff4d6d; margin-bottom: 25px;">Our Soul Connection</h1>
+    <div class="profile-row">
+        <div class="profile-card" style="background: #4a90e2;" onclick="openBio('sujan')"><h4>SUJAN</h4><p>The Patient Protector 🛡️<br>Meen Rashi | Gorkha</p></div>
+        <div class="profile-card" style="background: #ff758f;" onclick="openBio('amisha')"><h4>AMISHA</h4><p>The Magic Flame 🔥<br>Vrischik Rashi | Gorkha</p></div>
+    </div>
+    <div id="con-header" class="connection-header">OUR TOP CONNECTIONS ✨</div>
+    <button id="spell-button" class="spell-btn" onclick="startSpell()">MATCH OUR CONNECTION ✨</button>
+    <svg id="soul-line-svg" viewBox="0 0 100 100"><path class="soul-path" d="M50,0 Q50,50 50,100" /></svg>
+    <div id="connection-results" class="results-grid hidden"></div>
+    <button class="btn" style="margin: 20px 0; background: #ff4d6d;" onclick="resetAndBack()">BACK TO LOVE</button>
+</div>
+<div id="sujan-bio" class="bio-overlay hidden"><div class="bio-container"><div class="bio-header"><h2>The Protector 🛡️</h2><p>SUJAN (Puku)</p></div><div class="bio-data-grid"><div class="data-item"><label>📅 DOB</label><span>1997-04-07</span></div><div class="data-item"><label>📍 Place</label><span>Gorkha</span></div><div class="data-item"><label>🌙 Rashi</label><span>Meen (Pisces)</span></div><div class="data-item"><label>🕊️ Gana</label><span>Dev (Divine)</span></div></div><div class="bio-section"><h3>📖 The Soul's History</h3><p>From the moment he entered this world, Sujan was destined to be a guardian. Under the influence of Jupiter, his path was one of patience and kindness. He spent years building his heart, not realizing he was preparing it for a specific Scorpionic fire that would eventually change his world forever. 🌊</p></div><div class="bio-section"><h3>🧠 Personality Traits</h3><p>• Deeply Protective: Like the Elephant Yoni, he is a gentle giant until his loved ones are threatened. 🐘<br>• Pure Loyalty: He doesn't just love; he commits with his entire existence.<br>• The Peace-Maker: His "Dev Gana" soul naturally brings calm to the storm. 🧘‍♂️</p></div><div class="bio-section"><h3>💫 Why He Loves Amisha</h3><p>For Sujan, Amisha isn't just a partner; she is the missing piece of his cosmic puzzle. Her intensity matches his depth, and her fire keeps his world warm. He exists to see her smile. ❤️</p></div><button class="back-minimal-btn" onclick="closeBio('sujan')">GO BACK</button></div></div>
+<div id="amisha-bio" class="bio-overlay hidden"><div class="bio-container"><div class="bio-header"><h2>The Magic 🔥</h2><p>AMISHA</p></div><div class="bio-data-grid"><div class="data-item"><label>📅 DOB</label><span>2004-01-18</span></div><div class="data-item"><label>📍 Place</label><span>Gorkha</span></div><div class="data-item"><label>🌙 Rashi</label><span>Vrischik (Scorpio)</span></div><div class="data-item"><label>👑 Gana</label><span>Rakshas (Powerful)</span></div></div><div class="bio-section"><h3>📖 The Soul's History</h3><p>Amisha was born with the intensity of Mars. Her history is one of strength, beauty, and a refusal to settle for anything less than a soul-deep connection. She carries a magnetic energy that draws people in, but her heart was always locked, waiting for the one person whose Rashi (Meen) could finally understand her depth. 🦂✨</p></div><div class="bio-section"><h3>🧠 Personality Traits</h3><p>• Fierce Devotion: When Amisha loves, she loves with a power that can move mountains. 🔥<br>• Deer Grace: Her "Deer Yoni" gives her an elegant, nurturing side that only Sujan truly gets to see. 🦌<br>• Unstoppable Will: Her "Rakshas Gana" means she is a queen of her own destiny. 👑</p></div><div class="bio-section"><h3>💫 Why She Loves Sujan</h3><p>Amisha found in Sujan the one thing she always searched for: a safe harbor. His patience balances her fire, and his unwavering loyalty gives her the freedom to be her most authentic self. He is her home. 🫂</p></div><button class="back-minimal-btn" onclick="closeBio('amisha')">GO BACK</button></div></div>
+<div id="astro-modal" onclick="closeAstroModal()"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header-bg"><span class="modal-emoji" id="modalEmoji"></span><h2 class="modal-title" id="modalTitle"></h2></div><div class="modal-body" id="modalDetail"></div><button class="modal-btn" onclick="closeAstroModal()">CLOSE ✨</button></div></div>
+<script>
+    const names = ["Amisha", "Mero Babe", "Mero Maya", "Mero Mutu", "Mero Puku"];
+    const textToType = "In the chaos of the universe,\nI found my peace in you,\n";
+    let charIndex = 0;
+  
+    function type() {
+        if (charIndex < textToType.length) {
+            document.getElementById('typewriter-text').textContent += textToType.charAt(charIndex);
+            charIndex++; setTimeout(type, 75);
+        } else {
+            const nameSpan = document.createElement('span');
+            nameSpan.id = 'flicker-name';
+            nameSpan.textContent = names[0] + ".";
+            document.getElementById('typewriter-text').appendChild(nameSpan);
+            document.getElementById('cursor').style.display = 'none';
+            let nameIndex = 1;
+            const flickerInterval = setInterval(() => {
+                const nameElem = document.getElementById('flicker-name');
+                if(nameElem) {
+                    nameElem.style.opacity = 0;
+                    setTimeout(() => {
+                        nameElem.textContent = names[nameIndex % names.length] + ".";
+                        nameElem.style.opacity = 1;
+                        nameIndex++;
+                    }, 300);
+                }
+            }, 1000);
+            setTimeout(() => {
+                clearInterval(flickerInterval);
+                document.getElementById('intro-wrapper').classList.add('vanish');
+                document.getElementById('first-content').classList.remove('hidden');
+                document.getElementById('first-content').classList.add('fade-in');
+            }, 5000);
+        }
+    }
+   
+    // --- FAKE DATE PICKER LOGIC ---
+    function updateFakeDate(input) {
+        const val = input.value;
+        const display = document.getElementById('date-text-display');
+        if(val) {
+            display.innerText = val;
+            display.style.color = "#ff4d6d";
+            display.style.opacity = "1";
+        } else {
+            display.innerText = "mm / dd / yyyy";
+            display.style.opacity = "0.5";
+        }
+    }
+    function checkDate() {
+        const dateInput = document.getElementById('datePicker');
+        const val = dateInput.value;
+        if(val.includes("01-18") || val.includes("1-18")) {
+            document.getElementById('sec1').classList.add('hidden');
+            document.getElementById('sec2').classList.remove('hidden');
+        } else {
+            alert("Try again, Puku! ❤️");
+        }
+    }
+   
+    // --- TIMELINE DATA ---
+    const timelineData = [
+        { date: "21 DEC 2025", title: "FIRST MESSAGE", msg: "A simple “hi” that quietly flipped my world upside down. 📩✨" },
+        { date: "11 JAN 2026", title: "FIRST CALL", msg: "Hearing your voice for the first time… I never knew it could become my favorite sound. 📞🎶" },
+        { date: "18 JAN 2026", title: "THE PROPOSAL", msg: "The day I stopped waiting for hope… And chose you instead. 💍❤️" },
+        { date: "19 JAN 2026", title: "FIRST VIDEO CALL", msg: "Sharing a moment together, even from afar. Feeling closer than the distance suggests. 📹👩‍❤️‍👨" }
+    ];
+    function handleYes() {
+        fireConfetti();
+        document.getElementById('sec3').classList.add('hidden');
+        document.getElementById('timeline-section').classList.remove('hidden');
+        document.body.classList.add('allow-scroll');
+        playHorizontalTimeline();
+        setInterval(() => { const p = document.createElement('div'); p.className = 'petal'; p.style.left = Math.random() * 100 + "vw"; document.body.appendChild(p); setTimeout(() => p.remove(), 4000); }, 300);
+    }
+    async function playHorizontalTimeline() {
+        const heart = document.getElementById('love-heart');
+        const stage = document.getElementById('h-stage');
+        const step = 100 / (timelineData.length - 1);
+        for (let i = 0; i < timelineData.length; i++) {
+            let pos = i * step; if(pos > 100) pos = 100; heart.style.left = pos + "%";
+            const oldItem = document.querySelector('.h-memory-item.active');
+            if(oldItem) { oldItem.classList.remove('active'); oldItem.classList.add('exit'); await new Promise(r => setTimeout(r, 600)); oldItem.remove(); }
+            const memory = timelineData[i];
+            const item = document.createElement('div');
+            item.className = 'h-memory-item';
+            item.innerHTML = `
+                <div class="tl-date">${memory.date}</div>
+                <span class="tl-title">${memory.title}</span>
+                <div class="tl-msg">${memory.msg}</div>
+            `;
+            stage.appendChild(item);
+            setTimeout(() => { item.classList.add('active'); }, 50);
+            await new Promise(r => setTimeout(r, 3500));
+        }
+        await new Promise(r => setTimeout(r, 500));
+        const tlSection = document.getElementById('timeline-section');
+        tlSection.classList.add('fade-out');
+        await new Promise(r => setTimeout(r, 800));
+        tlSection.classList.add('hidden');
+        const finalDiv = document.getElementById('final');
+        finalDiv.classList.remove('hidden');
+        finalDiv.classList.add('fade-in');
+        setTimeout(() => { finalDiv.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    }
+    // --- FULL COSMIC DATA ---
+    const astroGridData = [
+        { i: "🛡️", h: "Nadi Lock", p: "Amisha and Sujan are soul-bound forever.", s: "100%", d: "In Vedic science, Nadi represents the soul's frequency. Your 100% match means your life energies flow in perfect resonance. Sujan's water-based stability acts as the perfect conductor for Amisha’s deep emotional currents, creating a lock that time cannot break." },
+        { i: "🌊", h: "Water Sync", p: "Sujan understands Amisha's every mood.", s: "100%", d: "Both Meen (Sujan) and Vrischika (Amisha) are water signs. This creates a psychic bridge where words aren't needed. Sujan understands your silence as clearly as your laughter because you both vibrate on the same emotional wavelength." },
+        { i: "💖", h: "Planetary", p: "Jupiter & Mars align for you both.", s: "98%", d: "Sujan is ruled by Jupiter (Wisdom/Expansion) and Amisha by Mars (Passion/Drive). Jupiter provides the safe expansion and vision that Mars respects, while Mars provides the fire that keeps Jupiter’s world alive and exciting." },
+        { i: "🐘", h: "Yoni Bond", p: "Sujan protects his Deer Amisha.", s: "100%", d: "The Elephant (Sujan) and Deer (Amisha) Yoni connection is one of the most stable. It signifies a bond where the stronger partner is incredibly gentle and the sensitive partner feels absolutely safe. It is the definition of a sanctuary." },
+        { i: "✨", h: "Destiny", p: "Sujan was scripted just for Amisha.", s: "100%", d: "Your charts suggest a 'Rinanubandhana'—a karmic tie. You were scripted to meet when the planets aligned to ensure you could help each other achieve your highest potential. This isn't chance; it's a divine appointment." },
+        { i: "🔥", h: "Intensity", p: "The ultimate fire between you two.", s: "99%", d: "Scorpio intensity is legendary. Most cannot handle it, but Pisces (Sujan) doesn't just handle it—he embraces it. He provides the depth where your fire can burn safely and beautifully forever." },
+        { i: "👑", h: "Gana Unity", p: "Dev & Rakshas find peace in love.", s: "96%", d: "Sujan's 'Dev' Gana brings divine patience, while Amisha’s 'Rakshas' Gana brings queen-like power. In your bond, these two opposites create a 'Yin-Yang' balance. He calms your storms, and you give him strength." },
+        { i: "🧿", h: "Kavach", p: "Sujan is Amisha's eternal shield.", s: "100%", d: "Astrologically, Sujan acts as a 'Kavach' (Shield). His presence in your life sectors means he naturally absorbs your stresses and provides a protective buffer against the world's negativity." },
+        { i: "🏹", h: "Life Path", p: "One future for Sujan and Amisha.", s: "100%", d: "Your North Nodes are linked. This means your individual goals naturally merge into one single path. What Amisha builds, Sujan sustains. You are a team designed by the cosmos for success." },
+        { i: "🫂", h: "Soulmate", p: "Amisha is Sujan's safest harbor.", s: "97%", d: "For a Pisces man, the world is often overwhelming. Amisha’s unwavering loyalty and Scorpionic protection provide the only place on earth where he feels he truly belongs." },
+        { i: "💎", h: "Rare Bond", p: "A Gorkha miracle for you two.", s: "100%", d: "The alignment of Gorkha heritage with these specific planetary degrees is a 1-in-a-million miracle. Your bond is traditionally grounded yet cosmically infinite." },
+        { i: "🧘‍♂️", h: "Peace", p: "Serenity when Amisha is near Sujan.", s: "94%", d: "Mars usually keeps the mind on high alert. However, Jupiter's presence (Sujan) has a sedative, peaceful effect on Amisha's nervous system. He is the 'calm' to your 'storm'." },
+        { i: "💓", h: "Joy Sync", p: "Stars celebrate Amisha's happiness.", s: "98%", d: "When Amisha is happy, Sujan's chart literally brightens. Your charts are mirror-linked, meaning your emotional states are contagious. Your joy is his greatest reward." },
+        { i: "📜", h: "Scripted", p: "Your love was written in the stars.", s: "100%", d: "The degree of Moon-Mercury placement shows that your communication transcends language. You were scripted to meet at the exact moment you did—it was written in the stars long ago." },
+        { i: "🛸", h: "Cosmic", p: "A friendship only you two share.", s: "95%", d: "Beyond romance, your 11th house connection is dominant. You are best friends first. You share a 'cosmic language' that even those closest to you cannot fully decode." },
+        { i: "🕯️", h: "Loyalty", p: "Sujan's trust for Amisha is absolute.", s: "100%", d: "Scorpio demands 100% loyalty. Sujan’s Pisces nature is incapable of betrayal once he finds his soulmate. This creates a circle of trust that is impenetrable." },
+        { i: "🌈", h: "Harmony", p: "Vision and strength combined in one.", s: "99%", d: "One provides the adaptation, the other the consistency. This 'Saptapadi' harmony ensures your journey never stagnates; you keep growing together forever." },
+        { i: "🏡", h: "Home", p: "Amisha is where Sujan belongs.", s: "100%", d: "In Sujan's chart, 'Home' is not a location in Gorkha—it is a person. Wherever Amisha is, Sujan is home. You are his emotional and spiritual foundation." },
+        { i: "⏳", h: "Forever", p: "A flame that never fades out.", s: "100%", d: "Fixed Sign energy meets Mutable Sign energy. This is the secret formula for longevity. One provides the root, the other the flexibility. It's a love designed to last lifetimes." },
+        { i: "🚀", h: "Growth", p: "Amisha amplifies Sujan's success.", s: "97%", d: "Amisha is Sujan's 'Shakti.' Since she entered his life, his planetary strength has doubled. Her belief in him acts as a catalyst for every success he achieves." }
+    ];
+    function fireConfetti() { for(let i=0; i<50; i++) { const c = document.createElement('div'); c.className = 'confetti-piece'; c.style.left = Math.random() * 100 + "vw"; c.style.backgroundColor = ['#ff4d6d', '#ffd700', '#00bcd4', '#ff4081'][Math.floor(Math.random()*4)]; c.style.animationDuration = (Math.random() * 1 + 1) + "s"; document.body.appendChild(c); setTimeout(() => c.remove(), 2000); } }
+    let rainInterval = null; let currentRainEmoji = null;
+    function startRain(emoji) { if (currentRainEmoji === emoji) return; stopRain(); currentRainEmoji = emoji; rainInterval = setInterval(() => { const e = document.createElement('div'); e.className = 'rain-emoji'; e.innerText = emoji; e.style.left = Math.random() * 100 + "vw"; e.style.animationDuration = (Math.random() * 1 + 1.5) + "s"; document.body.appendChild(e); setTimeout(() => e.remove(), 2000); }, 100); }
+    function stopRain() { clearInterval(rainInterval); rainInterval = null; currentRainEmoji = null; }
+    function updateSliderStyle(id, pctId) { const slider = document.getElementById(id); const val = slider.value; const pct = document.getElementById(pctId); pct.innerText = val + "%"; pct.classList.add('pulse'); setTimeout(() => pct.classList.remove('pulse'), 100); slider.style.background = `linear-gradient(90deg, #ff4d6d ${val}%, #e0e0e0 ${val}%)`; }
+    function handleCute() { const v = document.getElementById('cuteS').value; updateSliderStyle('cuteS', 'pct-cute'); startRain("🥰"); const b = v < 40 ? "Rating:" : (v < 80 ? "Look:" : "Level:"); const r = v < 40 ? " Average 🙄" : (v < 80 ? " Handsome 😍" : " UNSTOPPABLE 🔥"); document.getElementById('l2').innerHTML = `<span class="status-bold">${b}</span><span class="status-reg">${r}</span>`; }
+    function handleFunny() { const v = document.getElementById('funnyS').value; updateSliderStyle('funnyS', 'pct-funny'); startRain("😂"); const b = v < 40 ? "Vibe:" : (v < 80 ? "Mode:" : "Energy:"); const r = v < 40 ? " Boring 🥱" : (v < 80 ? " Fun Guy 😂" : " DYING LAUGHING! 😂"); document.getElementById('l4').innerHTML = `<span class="status-bold">${b}</span><span class="status-reg">${r}</span>`; }
+    function handleCare() { const v = document.getElementById('careS').value; updateSliderStyle('careS', 'pct-care'); startRain("🫂"); const b = v < 40 ? "Feeling:" : (v < 80 ? "Safety:" : "Bond:"); const r = v < 40 ? " Not Enough 🥺" : (v < 80 ? " So Protective 🤗" : " MY WHOLE WORLD 🫂"); document.getElementById('l3').innerHTML = `<span class="status-bold">${b}</span><span class="status-reg">${r}</span>`; }
+    function handleLove() { const v = document.getElementById('loveS').value; updateSliderStyle('loveS', 'pct-love'); startRain("❤️"); const b = v < 40 ? "Status:" : (v < 80 ? "Heart:" : "Soul:"); const r = v < 40 ? " Friendzone 😐" : (v < 80 ? " Falling Hard 🥰" : " INFINITE LOVE! ♾️"); document.getElementById('l1').innerHTML = `<span class="status-bold">${b}</span><span class="status-reg">${r}</span>`; }
+    const noTexts = ["Are you sure?", "Think again 🥺", "That’s illegal 🚨", "Don't break my heart 💔", "Try again ❤️"];
+    let noCount = 0;
+    function handleNo() { noCount++; const btn = document.getElementById('no-btn'); btn.innerText = noTexts[noCount % noTexts.length]; btn.classList.add('shake-anim'); setTimeout(() => btn.classList.remove('shake-anim'), 400); }
+    const canvas = document.getElementById('particleCanvas'); const ctx = canvas.getContext('2d'); let particles = []; let mouse = { x: null, y: null, radius: 100 };
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } window.onresize = resize; resize();
+    class Particle { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 2 + 0.5; this.baseX = this.x; this.baseY = this.y; this.density = (Math.random() * 20) + 5; } draw() { ctx.fillStyle = 'rgba(255, 179, 193, 0.4)'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } update() { let dx = mouse.x - this.x; let dy = mouse.y - this.y; let dist = Math.sqrt(dx*dx + dy*dy); if (dist < mouse.radius) { this.x -= (dx/dist) * ((mouse.radius - dist)/mouse.radius) * this.density; this.y -= (dy/dist) * ((mouse.radius - dist)/mouse.radius) * this.density; } else { if (this.x !== this.baseX) this.x -= (this.x - this.baseX)/15; if (this.y !== this.baseY) this.y -= (this.y - this.baseY)/15; } } }
+    function init() { particles = []; for(let i=0; i<70; i++) particles.push(new Particle()); } init();
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=> { p.draw(); p.update(); }); requestAnimationFrame(animate); } animate();
+    function updateMouse(e) { mouse.x = e.x; mouse.y = e.y; }
+    function updateTouch(e) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }
+    function openAstroModal(idx) { const d = astroGridData[idx]; document.getElementById('modalEmoji').innerText = d.i; document.getElementById('modalTitle').innerText = d.h; document.getElementById('modalDetail').innerText = d.d; document.getElementById('astro-modal').style.display = "flex"; }
+    function closeAstroModal() { document.getElementById('astro-modal').style.display = "none"; }
+    function checkMeters() { if(document.getElementById('loveS').value == 100 && document.getElementById('cuteS').value == 100 && document.getElementById('careS').value == 100 && document.getElementById('funnyS').value == 100) { document.getElementById('sec2').classList.add('hidden'); document.getElementById('sec3').classList.remove('hidden'); } else { alert("Max all sliders! 😂"); } }
+    function toggleFacts() { document.getElementById('facts-overlay').classList.toggle('hidden'); }
+    function openBio(who) { document.getElementById(who + '-bio').classList.remove('hidden'); }
+    function closeBio(who) { document.getElementById(who + '-bio').classList.add('hidden'); }
+    function resetAndBack() { document.getElementById('facts-overlay').classList.add('hidden'); const btn = document.getElementById('spell-button'); btn.classList.remove('hidden'); btn.innerText = "MATCH OUR CONNECTION ✨"; document.getElementById('soul-line-svg').style.opacity = "0"; document.getElementById('con-header').style.opacity = "0"; document.getElementById('connection-results').classList.add('hidden'); document.getElementById('connection-results').innerHTML = ""; }
+    function startSpell() { const btn = document.getElementById('spell-button'); btn.innerText = "Aligning Destiny... ✨"; setTimeout(() => { btn.classList.add('hidden'); document.getElementById('soul-line-svg').style.opacity = "1"; document.getElementById('con-header').style.opacity = "1"; const grid = document.getElementById('connection-results'); grid.classList.remove('hidden'); grid.innerHTML = ""; astroGridData.forEach((data, i) => { const c = document.createElement('div'); c.className = 'astro-card'; c.onclick = () => openAstroModal(i); c.innerHTML = `<span class="icon">${data.i}</span><h3>${data.h}</h3><p>${data.p}</p><span class="score">${data.s}</span>`; grid.appendChild(c); setTimeout(() => c.classList.add('reveal'), i * 100); }); }, 3000); }
+    window.onload = () => { type(); handleCute(); handleFunny(); handleCare(); handleLove(); stopRain(); };
+</script>
+</body>
+</html>
